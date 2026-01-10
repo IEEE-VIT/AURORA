@@ -6,6 +6,13 @@ import numpy as np
 import json
 import time
 import paho.mqtt.client as mqtt
+import ssl
+import os
+
+MQTT_BROKER = os.getenv("MQTT_BROKER")
+MQTT_PORT = int(os.getenv("MQTT_PORT", "8883"))
+MQTT_USER = os.getenv("MQTT_USERNAME")
+MQTT_PASS = os.getenv("MQTT_PASSWORD")
 
 ZONE_POLYGON = np.array([
     [0, 0],
@@ -33,7 +40,11 @@ def main():
     model = YOLO("yolov8s.pt")
 
     mqtt_client = mqtt.Client()
-    mqtt_client.connect("192.168.56.1", 1883, 60)
+    mqtt_client.username_pw_set(MQTT_USER, MQTT_PASS)
+    mqtt_client.tls_set(
+        tls_version=ssl.PROTOCOL_TLS_CLIENT
+    )
+    mqtt_client.connect(MQTT_BROKER, MQTT_PORT, 60)
     mqtt_client.loop_start()
 
     last_count = -1
@@ -83,6 +94,7 @@ def main():
         print(count)
         frame = zone_annotator.annotate(scene=frame)
 
+        print("Publishing count:", count)
         if count != last_count:
             payload = {
                 "count": count,
