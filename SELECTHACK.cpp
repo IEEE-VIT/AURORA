@@ -5,16 +5,15 @@
 #include <DHT.h>
 
 /* ---------- WiFi ---------- */
-const char* ssid = "Nord 3";
-const char* password = "Nordpass";
+const char* ssid = "XXXXX";
+const char* password = "XXXXXX";
 
 /* ---------- MQTT ---------- */
-const char* mqtt_server = "e1e9f66e.ala.asia-southeast1.emqxsl.com";
-const int mqtt_port = 8883;
-const char* mqtt_user = "esp_client";
-const char* mqtt_pass = "Emqx@2006";
+const char* mqtt_server = "XXXXXXX";
+const int mqtt_port = NNNN;
+const char* mqtt_user = "XXXXX";
+const char* mqtt_pass = "XXXXX";
 const char* mqtt_topic = "vision/zone1";
-
 /* ---------- Hardware ---------- */
 #define DHTPIN 21
 #define DHTTYPE DHT11
