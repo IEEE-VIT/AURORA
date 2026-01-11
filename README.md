@@ -1,4 +1,4 @@
-# 🌱 AI-Based Smart Energy Optimization System
+# AI-Based Smart Energy Optimization System
 
 This project is an attempt to tackle **energy wastage in indoor spaces** using a combination of **computer vision, IoT, and cloud communication**.
 
@@ -11,7 +11,7 @@ The goal is simple:
 
 ---
 
-## 🔧 System Overview
+## System Overview
 
 - **Computer Vision (YOLO)**  
   Detects and counts people in real time using a camera feed.
@@ -27,7 +27,7 @@ The goal is simple:
 
 ---
 
-## 🌍 Contribution
+## Contribution
 
 Most existing automation systems rely on static schedules or simple motion sensors.  
 This system instead reacts to **actual human behavior**, reducing unnecessary power consumption and enabling smarter energy usage.
@@ -36,7 +36,7 @@ By combining AI-based perception with IoT control, the project demonstrates a pr
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 - Real-time vision-based occupancy detection  
 - Cloud-based MQTT communication (network-agnostic)  
@@ -46,7 +46,7 @@ By combining AI-based perception with IoT control, the project demonstrates a pr
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - Python (YOLO, OpenCV)
 - ESP32 (WiFi, MQTT, relay control)
@@ -56,7 +56,7 @@ By combining AI-based perception with IoT control, the project demonstrates a pr
 
 ---
 
-## 📌 Use Cases
+## Use Cases
 
 - Smart classrooms
 - Office energy optimization
