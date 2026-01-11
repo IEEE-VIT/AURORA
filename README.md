@@ -1,4 +1,4 @@
-# AI-Based Smart Energy Optimization System
+# AURORA - AI-driven Utility Regulation for Occupancy-aware Resource Allocation
 
 This project is an attempt to tackle **energy wastage in indoor spaces** using a combination of **computer vision, IoT, and cloud communication**.
 
