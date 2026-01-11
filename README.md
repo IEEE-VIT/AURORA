@@ -66,7 +66,7 @@ By combining AI-based perception with IoT control, the project demonstrates a pr
 
 ---
 
-## 📄 Note
+##  Note
 
 This project is built as a **proof of concept** for intelligent, green energy–aware automation.  
 It is designed to be extendable with additional sensors, predictive models, and multi-room control logic.
