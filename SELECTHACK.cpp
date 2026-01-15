@@ -4,30 +4,33 @@
 #include <ArduinoJson.h>
 #include <DHT.h>
 
+#include "config.h"
+
 /* ---------- WiFi ---------- */
-const char* ssid = "XXXXX";
-const char* password = "XXXXXX";
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
 
 /* ---------- MQTT ---------- */
-const char* mqtt_server = "XXXXXXX";
-const int mqtt_port = NNNN;
-const char* mqtt_user = "XXXXX";
-const char* mqtt_pass = "XXXXX";
-const char* mqtt_topic = "vision/zone1";
-/* ---------- Hardware ---------- */
-#define DHTPIN 21
-#define DHTTYPE DHT11
+const char* mqtt_server = MQTT_SERVER;
+const int mqtt_port = MQTT_PORT;
+const char* mqtt_user = MQTT_USERNAME;
+const char* mqtt_pass = MQTT_PASSWORD;
+const char* mqtt_topic = MQTT_TOPIC;
 
-#define RELAY_LED 26     // Channel 1
-#define RELAY_FAN 27     // Channel 2
+/* ---------- Hardware ---------- */
+#define DHTPIN     DHT_PIN
+#define DHTTYPE    DHT_SENSOR_TYPE
+
+#define RELAY_LED  RELAY_LED_PIN
+#define RELAY_FAN  RELAY_FAN_PIN
 
 DHT dht(DHTPIN, DHTTYPE);
 
 /* ---------- Control Params ---------- */
-const float COMFORT_TEMP = 20.0;
-const float TEMP_HYST = 1.0;
-const int MIN_OCCUPANCY_ON = 2;
-const unsigned long UNOCCUPIED_DELAY = 5UL * 60UL * 1000UL;
+const float COMFORT_TEMP = COMFORT_TEMP_C;
+const float TEMP_HYST = TEMP_HYST_C;
+const int MIN_OCCUPANCY = MIN_OCCUPANCY_ON;
+const unsigned long UNOCCUPIED_DELAY = UNOCCUPIED_DELAY_MS;
 
 /* ---------- State ---------- */
 volatile int peopleCount = 0;
@@ -57,7 +60,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 
   if (doc["count"].is<int>()) {
-    peopleCount = doc["count"].as<int>();
+    peopleCount = doc["count"];
   } else if (doc["count"].is<const char*>()) {
     peopleCount = atoi(doc["count"]);
   } else {
@@ -77,17 +80,18 @@ void controlLogic() {
 
   bool desiredState = relayState;
 
-  // No occupancy → delayed OFF
+  // Unoccupied → delayed OFF
   if (peopleCount == 0) {
     if (millis() - lastOccupiedTime > UNOCCUPIED_DELAY) {
       desiredState = false;
     }
-  } else {
+  } 
+  else {
     // Occupied logic with hysteresis
     if (temp < (COMFORT_TEMP - TEMP_HYST)) {
       desiredState = false;
     }
-    else if (peopleCount >= MIN_OCCUPANCY_ON &&
+    else if (peopleCount >= MIN_OCCUPANCY &&
              temp > (COMFORT_TEMP + TEMP_HYST)) {
       desiredState = true;
     }
@@ -96,12 +100,11 @@ void controlLogic() {
     }
   }
 
-  // Apply relay change
   if (desiredState != relayState) {
     setRelay(desiredState);
   }
 
-  // REQUIRED SERIAL FORMAT
+  // Required serial format
   Serial.print("People=");
   Serial.print(peopleCount);
   Serial.print(" | Temp=");
@@ -147,7 +150,7 @@ void setup() {
 
 /* ---------- Loop ---------- */
 void loop() {
-  client.loop();      // MQTT keep-alive
+  client.loop();
   controlLogic();
-  delay(1500);        // Safe for DHT11
+  delay(1500);  // Safe for DHT11
 }
